@@ -1,0 +1,13 @@
+---
+## Sync
+aws_access_key_id: none
+aws_secret_access_key: none
+region: us-east-1
+sync_bucket_uri: none
+chain_stub: polkadot
+
+## Client
+project: default
+chain: polkadot
+loggingFilter: "sync=trace,afg=trace,babe=debug"
+# telemetryUrl:
