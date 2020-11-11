@@ -37,7 +37,7 @@
 - name: copy sync script
   template:
     src: blockchain_sync.sh.j2
-    dest: /root/blockchain_sync.sh
+    dest: /root/{{ chain }}_blockchain_sync.sh
     owner: root
     group: root
     mode: '0700'
@@ -46,4 +46,4 @@
   cron:
     name: "Blockchain sync to S3"
     minute: "*/15"
-    job: "/root/blockchain_sync.sh"
+    job: "/root/{{ chain }}_blockchain_sync.sh"

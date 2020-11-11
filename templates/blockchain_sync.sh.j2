@@ -7,7 +7,7 @@ export AWS_REGION={{ region }}
 
 echo "Ensuring client is not in blocksync status..."
 n=0
-until [ $(curl -sS -H "Content-Type: application/json" -d '{"id": 1, "jsonrpc": "2.0", "method": "system_health", "params": []}' http://localhost:9933 | jq -r '.result.isSyncing') == false ] || [ ${n} -ge 30 ]
+until [ $(curl -sS -H "Content-Type: application/json" -d '{"id": 1, "jsonrpc": "2.0", "method": "system_health", "params": []}' http://localhost:{{ api_rpc_port }} | jq -r '.result.isSyncing') == false ] || [ ${n} -ge 30 ]
 do
   printf '.'
   sleep 1
@@ -21,17 +21,17 @@ then
 fi
 
 echo "Stopping client..."
-systemctl stop polkadot.service
+systemctl stop {{ chain }}.service
 
 echo "Syncing blockchain to S3..."
 /usr/local/bin/aws s3 sync /data/polkadot/chains/{{ chain_stub }}/paritydb s3://{{ sync_bucket_uri }}
 
-if [ ! -f /data/polkadot/chains/{{ chain_stub }}/sync_ready ]; then
-    touch /data/polkadot/chains/{{ chain_stub }}/sync_ready
-    /usr/local/bin/aws s3 cp /data/polkadot/chains/{{ chain_stub }}/sync_ready s3://{{ sync_bucket_uri }}
+if [ ! -f /data/polkadot/chains/{{ chain_stub }}/{{ chain }}_sync_ready ]; then
+    touch /data/polkadot/chains/{{ chain_stub }}/{{ chain }}_sync_ready
+    /usr/local/bin/aws s3 cp /data/polkadot/chains/{{ chain_stub }}/{{ chain }}_sync_ready s3://{{ sync_bucket_uri }}/{{ chain }}
 fi
 
 echo "Restarting client..."
-systemctl start polkadot.service
+systemctl start {{ chain }}.service
 
 echo "Sync complete!"
