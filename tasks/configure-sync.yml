@@ -44,6 +44,6 @@
 
 - name: register sync script to cron
   cron:
-    name: "Blockchain sync to S3"
+    name: "{{ chain }} sync to S3"
     minute: "*/15"
     job: "/root/{{ chain }}_blockchain_sync.sh"
