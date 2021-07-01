@@ -27,11 +27,11 @@ echo "Stopping client..."
 systemctl stop {{ chain_stub }}.service
 
 echo "Syncing blockchain to S3..."
-/usr/local/bin/aws s3 sync /data/polkadot/chains/{{ chain_stub }}/paritydb s3://{{ sync_bucket_uri }}
+/usr/local/bin/aws s3 sync /data/polkadot/chains/{{ chain_stub }}/paritydb s3://{{ sync_bucket_name }}/{{ chain }}
 
 if [ ! -f /data/polkadot/chains/{{ chain_stub }}/{{ chain }}_sync_ready ]; then
     touch /data/polkadot/chains/{{ chain_stub }}/{{ chain }}_sync_ready
-    /usr/local/bin/aws s3 cp /data/polkadot/chains/{{ chain_stub }}/{{ chain }}_sync_ready s3://{{ sync_bucket_uri }}/{{ chain }}
+    /usr/local/bin/aws s3 cp /data/polkadot/chains/{{ chain_stub }}/{{ chain }}_sync_ready s3://{{ sync_bucket_name }}/{{ chain }}
 fi
 
 echo "Restarting client..."
