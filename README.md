@@ -11,7 +11,7 @@ Role Variables
 - aws_access_key_id: none
 - aws_secret_access_key: none
 - region: us-east-1
-- sync_bucket_uri: none
+- sync_bucket_name: none
 - chain_stub: polkadot
 
 ### Polkadot Client
