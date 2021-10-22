@@ -5,9 +5,10 @@ Description=Polkadot Node
 User=polkadot
 Group=polkadot
 ExecStart=/usr/local/bin/polkadot \
-         --name {{ project|default('project') }}-{{ instance_count }} \
+         --name {{ project|default('project') }}-{{ instance_count | default "truth" }} \
          --chain={{ chain }} \
-         --database paritydb-experimental \
+         --database rocksdb \
+         --wasm-execution=Compiled \
          --pruning archive \
          --rpc-external \
          --rpc-cors=all \

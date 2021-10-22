@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-{% if aws_access_key_id != "" %}
+{% if aws_access_key_id != "none" %}
 export AWS_ACCESS_KEY_ID={{ aws_access_key_id }}
 export AWS_SECRET_ACCESS_KEY={{ aws_secret_access_key }}
 {% endif %}
@@ -31,7 +31,7 @@ echo "Syncing blockchain to S3..."
 
 if [ ! -f /data/polkadot/chains/{{ chain_stub }}/{{ chain }}_sync_ready ]; then
     touch /data/polkadot/chains/{{ chain_stub }}/{{ chain }}_sync_ready
-    /usr/local/bin/aws s3 cp /data/polkadot/chains/{{ chain_stub }}/{{ chain }}_sync_ready s3://{{ sync_bucket_name }}/{{ chain }}
+    /usr/local/bin/aws s3 cp /data/polkadot/chains/{{ chain_stub }}/{{ chain }}_sync_ready s3://{{ sync_bucket_name }}/{{ chain }}_sync_ready
 fi
 
 echo "Restarting client..."
