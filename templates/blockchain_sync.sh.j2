@@ -27,7 +27,7 @@ echo "Stopping client..."
 systemctl stop {{ chain_stub }}.service
 
 echo "Syncing blockchain to S3..."
-/usr/local/bin/aws s3 sync /data/chains/{{ chain_stub }}/db s3://{{ sync_bucket_name }}/{{ chain }}/db
+/usr/local/bin/aws s3 sync /data/chains/{{ chain_stub }}/db s3://{{ sync_bucket_name }}/{{ chain }}
 
 if [ ! -f /data/chains/{{ chain_stub }}/{{ chain }}_sync_ready ]; then
     touch /data/chains/{{ chain_stub }}/{{ chain }}_sync_ready
