@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-{% if aws_access_key_id != "none" %}
+{% if aws_access_key_id is not none %}
 export AWS_ACCESS_KEY_ID={{ aws_access_key_id }}
 export AWS_SECRET_ACCESS_KEY={{ aws_secret_access_key }}
 {% endif %}
@@ -27,11 +27,11 @@ echo "Stopping client..."
 systemctl stop {{ chain_stub }}.service
 
 echo "Syncing blockchain to S3..."
-/usr/local/bin/aws s3 sync /data/chains/{{ chain_stub }}/db s3://{{ sync_bucket_name }}/{{ chain }} --delete
+/usr/local/bin/aws s3 sync /data/chains/{{ chain_stub }}/db s3://{{ sync_bucket_name }}/{{ chain }} --delete --acl public-read
 
 if [ ! -f /data/chains/{{ chain_stub }}/{{ chain }}_sync_ready ]; then
     touch /data/chains/{{ chain_stub }}/{{ chain }}_sync_ready
-    /usr/local/bin/aws s3 cp /data/chains/{{ chain_stub }}/{{ chain }}_sync_ready s3://{{ sync_bucket_name }}/{{ chain }}_sync_ready
+    /usr/local/bin/aws s3 cp /data/chains/{{ chain_stub }}/{{ chain }}_sync_ready s3://{{ sync_bucket_name }}/{{ chain }}_sync_ready --acl public-read
 fi
 
 echo "Restarting client..."
